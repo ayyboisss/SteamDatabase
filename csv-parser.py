@@ -1,32 +1,33 @@
 import csv
-from sqlalchemy import create_engine,  text
+from sqlalchemy import create_engine, insert
+from sqlalchemy.orm import Session
+from sqlalchemy.ext.automap import automap_base
 
+Base = automap_base()
 engine = create_engine("sqlite:///SteamData_Dummy.db",
                        future=True, echo=True)
+# This took way too long to figure out
+Base.prepare(autoload_with=engine)
+Games = Base.classes.Games
+session = Session(engine)
 
-conn = engine.connect()
-
-result = conn.execute(text("SELECT gameName FROM Games"))
-
-print(result.all())
-
-
-
-
-# with open('steam.csv', mode="r") as csv_file:
-#     reader = csv.reader(csv_file)
-#     for row in reader:
-#         if row[0].isdigit():
-#             pass
+with open("steam.csv", mode="r", encoding="utf-8") as file:
+    csv_reader = csv.reader(file)
+    for row in csv_reader:
+        if row[0].isdigit() == True:
+            stmt = (
+                insert(Games).values(
+                    gameID = row[0],
+                    gameName = row[1],
+                    releaseDate = row[2],
+                    languageEnglish = row[3],
+                    requiredAge = row[7],
+                    gameAchievements = row[11],
+                    positiveRatings = row[12],
+                    negativeRatings = row[13],
+                    averagePlaytime = row[14],
+                    medianPlaytme = row[15],
+                    gamePrice = row[17],
+                    )
+                )
             
-            # cur.execute("""INSERT INTO Games (gameID, gameName, releaseDate,
-            #             languageEnglish, requiredAge, gameAchievements,
-            #             positiveRatings, negativeRatings, averagePlaytime,
-            #             medianPlaytime, gamePrice)
-            #             Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            #             (row[0], row[1], row[2], row[3], row[7], row[11],
-            #              row[12], row[13], row[14], row[15], row[17]))
-            # connection.commit()
-
-        
-
