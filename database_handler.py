@@ -33,8 +33,9 @@ class Database(object):
                                 releaseDate, languageEnglish,
                                 requiredAge, gameAchievements,
                                 positiveratings, negativeRatings,
-                                averagePlaytime, medianPlaytime, gamePrice)
-                                Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                averagePlaytime, medianPlaytime,
+                                gamePrice, gamePlatforms)
+                                Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                             """,
                             values)
         except sqlite3.Error:
