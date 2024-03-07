@@ -44,31 +44,31 @@ class Database(object):
         self.cur.execute("""
                           INSERT INTO Developers (developerName)
                           Values (?)
-                          """, (developerName))
+                          """, (developerName,))
     
     def insert_Categories(self, categoryName):
         self.cur.execute("""
                           INSERT INTO Categories (categoryName)
                           Values (?)
-                         """, (categoryName))
+                         """, (categoryName,))
     
     def insert_Tags(self, tagName):
         self.cur.execute("""
                           INSERT INTO Tags (tagName)
                           Values (?)
-                         """, (tagName))
+                         """, (tagName,))
     
-    def insert_Pubishers(self, publisherName):
+    def insert_Pubishers(self, publisherName,):
         self.cur.execute("""
                           INSERT INTO Publishers (publisherName)
                           VALUES (?)
-                         """, (publisherName))
+                         """, (publisherName,))
     
     def insert_Owners(self, ownerAmount):
         self.cur.execute("""
                           INSERT INTO Owners (ownerAmount)
                          VALUES (?)
-                         """, (ownerAmount))
+                         """, (ownerAmount,))
     
     def select_all(self, QUERY):
         """A function for debugging, REMOVE after finishing this"""
