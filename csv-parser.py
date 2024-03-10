@@ -14,7 +14,7 @@ temp_developers = []
 temp_owners = []
 temp_publishers = []
 temp_categories = []
-
+temp_genres = []
 
 with open("steam.csv", mode="r", encoding="utf-8") as file:
     csv_reader = csv.reader(file)
@@ -33,13 +33,22 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
                 temp_developers.append(row[5])
         # END OF PUBLISHERS TABLE
         
+        # Handles Categories Table
         if row[8] != "categories":
             for i in seperator_irator(row[8]):
                 if i not in temp_categories:
                     print(i)
                     Games.insert_Categories(i)
                     temp_categories.append(i)
+        # END OF Categories Table
         
+        # Handles Genres Table
+        if row[9] != "genres":
+            for i in seperator_irator(row[9]):
+                if i not in temp_genres:
+                    Games.insert_Genres(row[i])
+                    temp_genres.append(i)
+
         # Handles Games Table
         if row[0].isdigit() == True:
             game_things = (

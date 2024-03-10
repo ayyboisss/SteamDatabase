@@ -71,6 +71,12 @@ class Database(object):
                          VALUES (?)
                          """, (ownerAmount,))
     
+    def insert_Genres(self, genreName):
+        self.cur.execute("""
+                         INSERT INTO Genres (genreName)
+                         Values (?)
+                         """, (genreName,))
+    
     def select_all(self, QUERY):
         """A function for debugging, REMOVE after finishing this"""
         self.cur.execute(QUERY)
