@@ -45,7 +45,7 @@ class Database(object):
         self.cur.execute("""
                           INSERT INTO Developers (developerName)
                           Values (?)
-                          """, (developerName,))
+                         """, (developerName,))
     
     def insert_Categories(self, categoryName):
         self.cur.execute("""
@@ -68,17 +68,26 @@ class Database(object):
     def insert_Owners(self, ownerAmount):
         self.cur.execute("""
                           INSERT INTO Owners (ownerAmount)
-                         VALUES (?)
+                          VALUES (?)
                          """, (ownerAmount,))
     
     def insert_Genres(self, genreName):
         self.cur.execute("""
-                         INSERT INTO Genres (genreName)
-                         Values (?)
+                          INSERT INTO Genres (genreName)
+                          Values (?)
                          """, (genreName,))
     
+    def update_GamesOwnerAmount(self, gameName, ownerAmount):
+        self.cur.execute("""SELECT gameID FROM Games
+                         WHERE gameName = (?)""", (gameName,))
+        gameID = self.cur.fetchone()
+        self.cur.execute("""UPDATE Games SET ownerAmount = (?)
+                            WHERE gameID = (?)""", (ownerAmount, gameID,))
+
+
+    
     def select_all(self, QUERY):
-        """A function for debugging, REMOVE after finishing this"""
+        """A function for debugging, REMOVE if finished"""
         self.cur.execute(QUERY)
         result = self.cur.fetchall()
         return result
