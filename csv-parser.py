@@ -73,10 +73,9 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
              row[14], row[15], row[17],
             ) # Goodluck figuring this out!
             Games.insert_Games(game_things) # ILOVEOBJECTS
+            Games.update_GamesOwnerAmount(row[1], row[16])
         # END OF GAMES TABLE
-print(Games.select_all("""SELECT ownerAmount FROM Owners"""))
-print(temp_owners)
+print(Games.select_all("""SELECT gameName,ownerAmount FROM Games"""))
 
-        
             
             

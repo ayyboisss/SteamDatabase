@@ -82,7 +82,7 @@ class Database(object):
                          WHERE gameName = (?)""", (gameName,))
         gameID = self.cur.fetchone()
         self.cur.execute("""UPDATE Games SET ownerAmount = (?)
-                            WHERE gameID = (?)""", (ownerAmount, gameID,))
+                            WHERE gameID = (?)""", (ownerAmount, gameID[0],))
 
 
     
