@@ -78,14 +78,95 @@ class Database(object):
                          """, (genreName,))
     
     def update_GamesOwnerAmount(self, gameName, ownerAmount):
-        self.cur.execute("""SELECT gameID FROM Games
-                         WHERE gameName = (?)""", (gameName,))
-        gameID = self.cur.fetchone()
-        self.cur.execute("""UPDATE Games SET ownerAmount = (?)
-                            WHERE gameID = (?)""", (ownerAmount, gameID[0],))
+        gameID = self.selectGames_gameNameFor_gameID(gameName)
+        self.cur.execute("""
+                         UPDATE Games
+                         SET ownerAmount = (?)
+                         WHERE gameID = (?)
+                         """, (ownerAmount, gameID[0],))
 
+    def insert_gameDevelopers(self, gameName, developerName):
+        gameID = self.selectGames_gameNameFor_gameID(gameName)
+        developerID = self.selectDevelopers_developerNameFor_developerID(developerName)
+        self.cur.execute("""
+                         INSERT INTO gameDevelopers (gameID, developerID)
+                         VALUES (?, ?)
+                         """, (gameID, developerID,))
 
+    def insert_gamePublishers(self, gameName, publisherName):
+        gameID = self.selectGames_gameNameFor_gameID(gameName)
+        publisherID = self.selectPublishers_publisherNameFor_publisherID(publisherName)
+        self.cur.execute("""
+                         INSERT INTO gameDevelopers (gameID, publisherID)
+                         VALUES (?, ?)
+                         """, (gameID, publisherID,))
     
+    def insert_gameTags(self, gameName, tagName):
+        gameID = self.selectGames_gameNameFor_gameID(gameName)
+        tagID = self.selectTags_tagNameFor_tagID(tagName)
+        self.cur.execute("""
+                         INSERT INTO gameTags (gameID, tagID)
+                         VALUES(?, ?)
+                         """ (gameID, tagID,))
+    
+    def insert_gameCategories(self, gameName, categoryName):
+        gameID = self.selectGames_gameNameFor_gameID(gameName)
+        categoryID = self.selectCategories_categoryNameFor_categoryID(categoryName)
+        self.cur.execute("""
+                         INSERT INTO gameCategories (gameID, categoryID)
+                         VALUES (?, ?)
+                         """, (gameID, categoryID,))
+    
+    def insert_gameGenres(self, gameName, genreName):
+        gameID = self.selectGames_gameNameFor_gameID(gameName)
+        genreID = self.selectGenres_genreNameFor_genreID(genreName)
+        self.cur.execute("""
+                         INSERT INTO gameGenres (gameID, genreID)
+                         VALUES (?, ?)
+                         """, (gameID, genreID,))
+
+    def selectGames_gameNameFor_gameID(self, gameName):
+        self.cur.execute("""SELECT gameID FROM Games WHERE gameName = (?)"""
+                         , (gameName,))
+        result = self.cur.fetchone()
+        return result[0]
+
+    def selectGames_gameNameFor_gameID(self, developerName):
+        self.cur.execute("""SELECT developerID FROM Developers WHERE developerName = (?)"""
+                         , (developerName,))
+        result = self.cur.fetchone()
+        return result[0]
+    
+    def selectDevelopers_developerNameFor_developerID(self, tagName):
+        self.cur.execute("""SELECT tagID FROM Tags WHERE tagName = (?)"""
+                         , (tagName,))
+        result = self.cur.fetchone()
+        return result[0]
+    
+    def selectTags_tagNameFor_tagID(self, tagName):
+        self.cur.execute("""SELECT tagID FROM Tags WHERE tagName = (?)"""
+                         , (tagName,))
+        result = self.cur.fetchone()
+        return result[0]
+    
+    def selectCategories_categoryNameFor_categoryID(self, categoryName):
+        self.cur.execute("""SELECT categoryID FROM Categories WHERE categoryName = (?)"""
+                         , (categoryName,))
+        result = self.cur.fetchone()
+        return result[0]
+    
+    def selectPublishers_publisherNameFor_publisherID(self, publisherName):
+        self.cur.execute("""SELECT publisherID FROM Publishers WHERE publisherName = (?)"""
+                         , (publisherName,))
+        result = self.cur.fetchone()
+        return result[0]
+    
+    def selectGenres_genreNameFor_genreID(self, genreName):
+        self.cur.execute("""SELECT genreID FROM Genres WHERE genreName = (?)"""
+                         , (genreName,))
+        result = self.cur.fetchone()
+        return result[0]
+
     def select_all(self, QUERY):
         """A function for debugging, REMOVE if finished"""
         self.cur.execute(QUERY)

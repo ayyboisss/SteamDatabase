@@ -20,11 +20,30 @@ temp_tags = []
 with open("steam.csv", mode="r", encoding="utf-8") as file:
     csv_reader = csv.reader(file)
     for row in csv_reader:
+        # Handles Owners Table
+        if row[16] != "owners":
+            if row[16] not in temp_owners:
+                Games.insert_Owners(row[16])
+                temp_owners.append(row[16])
+        # END OF Owners Table
+
+        # Handles Games Table
+        if row[0].isdigit():
+            game_things = (
+             row[0], row[1], row[2], row[3], row[7],
+             row[11], row[12], row[13], row[6],
+             row[14], row[15], row[17],
+            ) # Goodluck figuring this out!
+            Games.insert_Games(game_things) # ILOVEOBJECTS
+            Games.update_GamesOwnerAmount(row[1], row[16])
+        # END OF GAMES TABLE
+        
         # Handles Developers Table
         if row[4] != "developer":
             if row[4] not in temp_developers:
                 Games.insert_Developers(row[4])
                 temp_developers.append(row[4])
+                Games.insert_gameDevelopers(row[1], row[4])
         # END OF DEVELOPERS 
         
         # Handles Publishers Table
@@ -32,6 +51,7 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
             if row[5] not in temp_publishers:
                 Games.insert_Pubishers(row[5])
                 temp_developers.append(row[5])
+                Games.insert_gamePublishers(row[1], row[5])
         # END OF PUBLISHERS TABLE
         
         # Handles Categories Table
@@ -58,23 +78,7 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
                     temp_tags.append(i)
         # END OF Tags Table
                     
-        # Handles Owners Table
-        if row[16] != "owners":
-            if row[16] not in temp_owners:
-                Games.insert_Owners(row[16])
-                temp_owners.append(row[16])
-        # END OF Owners Table
 
-        # Handles Games Table
-        if row[0].isdigit() == True:
-            game_things = (
-             row[0], row[1], row[2], row[3], row[7],
-             row[11], row[12], row[13], row[6],
-             row[14], row[15], row[17],
-            ) # Goodluck figuring this out!
-            Games.insert_Games(game_things) # ILOVEOBJECTS
-            Games.update_GamesOwnerAmount(row[1], row[16])
-        # END OF GAMES TABLE
 print(Games.select_all("""SELECT gameName,ownerAmount FROM Games"""))
 
             
