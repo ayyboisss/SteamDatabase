@@ -1,7 +1,7 @@
 import csv
 from database_handler import Database
 
-DATABASE = "Steamdata_Dummy.db"
+DATABASE = "Steamdata_Dummy2.db"
 Games = Database()
 Games.set_Database(DATABASE)
 
@@ -20,6 +20,57 @@ temp_tags = []
 with open("steam.csv", mode="r", encoding="utf-8") as file:
     csv_reader = csv.reader(file)
     for row in csv_reader:
+        game_tempTags = []
+        game_tempDevelopers = []
+        game_tempGenres = []
+        game_tempPublishers = []
+        game_tempCategories = []
+        
+        # Handles Developers Table
+        if row[4] != "developer":
+            if row[4] not in temp_developers:
+                for i in seperator_irator(row[4]):
+                    Games.insert_Developers(i)
+                    temp_developers.append(i)
+                    game_tempDevelopers.append(i)
+        # END OF DEVELOPERS 
+        
+        # Handles Publishers Table
+        if row[5] != "publisher":
+            if row[5] not in temp_publishers:
+                for i in seperator_irator(row[5]):
+                    Games.insert_Pubishers(i)
+                    temp_publishers.append(i)
+                    game_tempPublishers.append(i)
+        # END OF PUBLISHERS TABLE
+        
+        # Handles Categories Table
+        if row[8] != "categories":
+            for i in seperator_irator(row[8]):
+                if i not in temp_categories:
+                    Games.insert_Categories(i)
+                    temp_categories.append(i)
+                    game_tempCategories.append(i)
+        # END OF Categories Table
+        
+        # Handles Genres Table
+        if row[9] != "genres":
+            for i in seperator_irator(row[9]):
+                if i not in temp_genres:
+                    Games.insert_Genres(i)
+                    temp_genres.append(i)
+                    game_tempGenres.append(i)
+        # END OF Genres Table
+
+        # Handles Tags Table
+        if row[10] != "steamspy_tags":
+            for i in seperator_irator(row[10]):
+                if i not in temp_tags:
+                    Games.insert_Tags(i)
+                    temp_tags.append(i)
+                    game_tempTags.append(i)
+        # END OF Tags Table
+        
         # Handles Owners Table
         if row[16] != "owners":
             if row[16] not in temp_owners:
@@ -36,50 +87,25 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
             ) # Goodluck figuring this out!
             Games.insert_Games(game_things) # ILOVEOBJECTS
             Games.update_GamesOwnerAmount(row[1], row[16])
+            # It hurts to look at
+            for x in game_tempCategories:
+                Games.insert_gameCategories(row[1], x)
+            for x in game_tempDevelopers:
+                Games.insert_gameDevelopers(row[1], x)
+            for x in game_tempGenres:
+                Games.insert_gameGenres(row[1], x)
+            for x in game_tempPublishers:
+                Games.insert_gamePublishers(row[1], x)
+            for x in game_tempTags:
+                Games.insert_gameTags(row[1], x)
         # END OF GAMES TABLE
         
-        # Handles Developers Table
-        if row[4] != "developer":
-            if row[4] not in temp_developers:
-                Games.insert_Developers(row[4])
-                temp_developers.append(row[4])
-                Games.insert_gameDevelopers(row[1], row[4])
-        # END OF DEVELOPERS 
-        
-        # Handles Publishers Table
-        if row[5] != "publisher":
-            if row[5] not in temp_publishers:
-                Games.insert_Pubishers(row[5])
-                temp_developers.append(row[5])
-                Games.insert_gamePublishers(row[1], row[5])
-        # END OF PUBLISHERS TABLE
-        
-        # Handles Categories Table
-        if row[8] != "categories":
-            for i in seperator_irator(row[8]):
-                if i not in temp_categories:
-                    Games.insert_Categories(i)
-                    temp_categories.append(i)
-        # END OF Categories Table
-        
-        # Handles Genres Table
-        if row[9] != "genres":
-            for i in seperator_irator(row[9]):
-                if i not in temp_genres:
-                    Games.insert_Genres(i)
-                    temp_genres.append(i)
-        # END OF Genres Table
 
-        # Handles Tags Table
-        if row[10] != "steamspy_tags":
-            for i in seperator_irator(row[10]):
-                if i not in temp_tags:
-                    Games.insert_Tags(i)
-                    temp_tags.append(i)
-        # END OF Tags Table
-                    
 
-print(Games.select_all("""SELECT gameName,ownerAmount FROM Games"""))
+
+
+Games.commit()
+Games.exit()
 
             
             

@@ -8,13 +8,8 @@ class Database(object):
         self.conn = sqlite3.connect(self.DATABASE)
         self.cur = self.conn.cursor()
 
-    def __exit__(self, ext_type, exc_value, traceback):
-        self.cur.close()
-        if isinstance(exc_value, Exception):
-            self.conn.rollback()
-        else:
-            self.conn.commit()
-            self.conn.close()
+    def exit(self):
+        self.conn.close()
 
     def commit(self):
         self.conn.commit()
@@ -83,11 +78,12 @@ class Database(object):
                          UPDATE Games
                          SET ownerAmount = (?)
                          WHERE gameID = (?)
-                         """, (ownerAmount, gameID[0],))
+                         """, (ownerAmount, gameID,))
 
     def insert_gameDevelopers(self, gameName, developerName):
         gameID = self.selectGames_gameNameFor_gameID(gameName)
-        developerID = self.selectDevelopers_developerNameFor_developerID(developerName)
+        developerID = self.selectDevelopers_developerNameFor_developerID(str(developerName))
+        print(developerName)
         self.cur.execute("""
                          INSERT INTO gameDevelopers (gameID, developerID)
                          VALUES (?, ?)
@@ -97,7 +93,7 @@ class Database(object):
         gameID = self.selectGames_gameNameFor_gameID(gameName)
         publisherID = self.selectPublishers_publisherNameFor_publisherID(publisherName)
         self.cur.execute("""
-                         INSERT INTO gameDevelopers (gameID, publisherID)
+                         INSERT INTO gamePublishers (gameID, publisherID)
                          VALUES (?, ?)
                          """, (gameID, publisherID,))
     
@@ -107,7 +103,7 @@ class Database(object):
         self.cur.execute("""
                          INSERT INTO gameTags (gameID, tagID)
                          VALUES(?, ?)
-                         """ (gameID, tagID,))
+                         """, (gameID, tagID,))
     
     def insert_gameCategories(self, gameName, categoryName):
         gameID = self.selectGames_gameNameFor_gameID(gameName)
@@ -126,23 +122,19 @@ class Database(object):
                          """, (gameID, genreID,))
 
     def selectGames_gameNameFor_gameID(self, gameName):
+        print(gameName)
         self.cur.execute("""SELECT gameID FROM Games WHERE gameName = (?)"""
                          , (gameName,))
         result = self.cur.fetchone()
         return result[0]
 
-    def selectGames_gameNameFor_gameID(self, developerName):
+    def selectDevelopers_developerNameFor_developerID(self, developerName):
         self.cur.execute("""SELECT developerID FROM Developers WHERE developerName = (?)"""
                          , (developerName,))
         result = self.cur.fetchone()
+        print(result[0])
         return result[0]
-    
-    def selectDevelopers_developerNameFor_developerID(self, tagName):
-        self.cur.execute("""SELECT tagID FROM Tags WHERE tagName = (?)"""
-                         , (tagName,))
-        result = self.cur.fetchone()
-        return result[0]
-    
+
     def selectTags_tagNameFor_tagID(self, tagName):
         self.cur.execute("""SELECT tagID FROM Tags WHERE tagName = (?)"""
                          , (tagName,))
