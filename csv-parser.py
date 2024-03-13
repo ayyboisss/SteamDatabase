@@ -28,47 +28,52 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
         
         # Handles Developers Table
         if row[4] != "developer":
-            if row[4] not in temp_developers:
-                for i in seperator_irator(row[4]):
-                    Games.insert_Developers(i)
-                    temp_developers.append(i)
-                    game_tempDevelopers.append(i)
+            for i in range(0, len(seperator_irator(row[4]))):
+                game_tempDevelopers.append(seperator_irator(row[4])[i])
+                if seperator_irator(row[4])[i] not in temp_developers:
+                    developer = seperator_irator(row[4])[i]
+                    temp_developers.append(developer)
+                    Games.insert_Developers(developer)
         # END OF DEVELOPERS 
         
         # Handles Publishers Table
         if row[5] != "publisher":
-            if row[5] not in temp_publishers:
-                for i in seperator_irator(row[5]):
-                    Games.insert_Pubishers(i)
-                    temp_publishers.append(i)
-                    game_tempPublishers.append(i)
+            for i in range(0, len(seperator_irator(row[5]))):
+                game_tempPublishers.append(seperator_irator(row[5])[i])
+                if seperator_irator(row[5])[i] not in temp_publishers:
+                    publisher = seperator_irator(row[5])[i]
+                    temp_publishers.append(publisher)
+                    Games.insert_Pubishers(publisher)
         # END OF PUBLISHERS TABLE
         
         # Handles Categories Table
         if row[8] != "categories":
             for i in seperator_irator(row[8]):
+                game_tempCategories.append(i)
                 if i not in temp_categories:
                     Games.insert_Categories(i)
                     temp_categories.append(i)
-                    game_tempCategories.append(i)
+
         # END OF Categories Table
         
         # Handles Genres Table
         if row[9] != "genres":
             for i in seperator_irator(row[9]):
+                game_tempGenres.append(i)
                 if i not in temp_genres:
                     Games.insert_Genres(i)
                     temp_genres.append(i)
-                    game_tempGenres.append(i)
+
         # END OF Genres Table
 
         # Handles Tags Table
         if row[10] != "steamspy_tags":
             for i in seperator_irator(row[10]):
+                game_tempTags.append(i)
                 if i not in temp_tags:
                     Games.insert_Tags(i)
                     temp_tags.append(i)
-                    game_tempTags.append(i)
+
         # END OF Tags Table
         
         # Handles Owners Table
@@ -90,26 +95,16 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
             print(row[1] + " Game Name!!! ")
             # It hurts to look at
             for x in game_tempCategories:
-                i = Games.selectCategories_categoryNameFor_categoryID(x)
-                Games.insert_gameCategories(row[1], str(i))
+                Games.insert_gameCategories(row[1], x)
             for x in game_tempDevelopers:
-                i = Games.selectDevelopers_developerNameFor_developerID(x)
-                Games.insert_gameDevelopers(row[1], str(i))
+                Games.insert_gameDevelopers(row[1], x)
             for x in game_tempGenres:
-                i = Games.selectGenres_genreNameFor_genreID(x)
-                Games.insert_gameGenres(row[1], str(i))
+                Games.insert_gameGenres(row[1], x)
             for x in game_tempPublishers:
-                i = Games.selectPublishers_publisherNameFor_publisherID(x)
-                Games.insert_gamePublishers(row[1], str(i))
+                Games.insert_gamePublishers(row[1], x)
             for x in game_tempTags:
-                i = Games.selectTags_tagNameFor_tagID(x)
-                Games.insert_gameTags(row[1], str(i))
+                Games.insert_gameTags(row[1], x)
         # END OF GAMES TABLE
-        
-
-
-
-
 Games.commit()
 Games.exit()
 

@@ -131,34 +131,41 @@ class Database(object):
         self.cur.execute("""SELECT developerID FROM Developers WHERE developerName = (?)"""
                          , (developerName,))
         result = self.cur.fetchone()
-        return result
+        return result[0]
 
     def selectTags_tagNameFor_tagID(self, tagName):
         self.cur.execute("""SELECT tagID FROM Tags WHERE tagName = (?)"""
                          , (tagName,))
         result = self.cur.fetchone()
-        return result
+        return result[0]
     
     def selectCategories_categoryNameFor_categoryID(self, categoryName):
         self.cur.execute("""SELECT categoryID FROM Categories WHERE categoryName = (?)"""
                          , (categoryName,))
         result = self.cur.fetchone()
-        return result
+        print( f"{result} RESULT")
+        return result[0]
     
     def selectPublishers_publisherNameFor_publisherID(self, publisherName):
         self.cur.execute("""SELECT publisherID FROM Publishers WHERE publisherName = (?)"""
                          , (publisherName,))
         result = self.cur.fetchone()
-        return result
+        return result[0]
     
     def selectGenres_genreNameFor_genreID(self, genreName):
         self.cur.execute("""SELECT genreID FROM Genres WHERE genreName = (?)"""
                          , (genreName,))
         result = self.cur.fetchone()
-        return result
+        return result[0]
 
     def select_all(self, QUERY):
         """A function for debugging, REMOVE if finished"""
         self.cur.execute(QUERY)
         result = self.cur.fetchall()
-        return result
+        return result[0]
+    
+# Games = Database()
+# Games.set_Database("SteamData_Dummy2.db")
+
+
+# print(Games.selectCategories_categoryNameFor_categoryID("Multi-player"))
