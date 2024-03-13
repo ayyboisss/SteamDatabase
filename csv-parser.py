@@ -87,17 +87,23 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
             ) # Goodluck figuring this out!
             Games.insert_Games(game_things) # ILOVEOBJECTS
             Games.update_GamesOwnerAmount(row[1], row[16])
+            print(row[1] + " Game Name!!! ")
             # It hurts to look at
             for x in game_tempCategories:
-                Games.insert_gameCategories(row[1], x)
+                i = Games.selectCategories_categoryNameFor_categoryID(x)
+                Games.insert_gameCategories(row[1], str(i))
             for x in game_tempDevelopers:
-                Games.insert_gameDevelopers(row[1], x)
+                i = Games.selectDevelopers_developerNameFor_developerID(x)
+                Games.insert_gameDevelopers(row[1], str(i))
             for x in game_tempGenres:
-                Games.insert_gameGenres(row[1], x)
+                i = Games.selectGenres_genreNameFor_genreID(x)
+                Games.insert_gameGenres(row[1], str(i))
             for x in game_tempPublishers:
-                Games.insert_gamePublishers(row[1], x)
+                i = Games.selectPublishers_publisherNameFor_publisherID(x)
+                Games.insert_gamePublishers(row[1], str(i))
             for x in game_tempTags:
-                Games.insert_gameTags(row[1], x)
+                i = Games.selectTags_tagNameFor_tagID(x)
+                Games.insert_gameTags(row[1], str(i))
         # END OF GAMES TABLE
         
 

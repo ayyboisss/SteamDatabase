@@ -74,6 +74,7 @@ class Database(object):
     
     def update_GamesOwnerAmount(self, gameName, ownerAmount):
         gameID = self.selectGames_gameNameFor_gameID(gameName)
+        print(gameID)
         self.cur.execute("""
                          UPDATE Games
                          SET ownerAmount = (?)
@@ -83,7 +84,6 @@ class Database(object):
     def insert_gameDevelopers(self, gameName, developerName):
         gameID = self.selectGames_gameNameFor_gameID(gameName)
         developerID = self.selectDevelopers_developerNameFor_developerID(str(developerName))
-        print(developerName)
         self.cur.execute("""
                          INSERT INTO gameDevelopers (gameID, developerID)
                          VALUES (?, ?)
@@ -122,7 +122,6 @@ class Database(object):
                          """, (gameID, genreID,))
 
     def selectGames_gameNameFor_gameID(self, gameName):
-        print(gameName)
         self.cur.execute("""SELECT gameID FROM Games WHERE gameName = (?)"""
                          , (gameName,))
         result = self.cur.fetchone()
@@ -132,32 +131,31 @@ class Database(object):
         self.cur.execute("""SELECT developerID FROM Developers WHERE developerName = (?)"""
                          , (developerName,))
         result = self.cur.fetchone()
-        print(result[0])
-        return result[0]
+        return result
 
     def selectTags_tagNameFor_tagID(self, tagName):
         self.cur.execute("""SELECT tagID FROM Tags WHERE tagName = (?)"""
                          , (tagName,))
         result = self.cur.fetchone()
-        return result[0]
+        return result
     
     def selectCategories_categoryNameFor_categoryID(self, categoryName):
         self.cur.execute("""SELECT categoryID FROM Categories WHERE categoryName = (?)"""
                          , (categoryName,))
         result = self.cur.fetchone()
-        return result[0]
+        return result
     
     def selectPublishers_publisherNameFor_publisherID(self, publisherName):
         self.cur.execute("""SELECT publisherID FROM Publishers WHERE publisherName = (?)"""
                          , (publisherName,))
         result = self.cur.fetchone()
-        return result[0]
+        return result
     
     def selectGenres_genreNameFor_genreID(self, genreName):
         self.cur.execute("""SELECT genreID FROM Genres WHERE genreName = (?)"""
                          , (genreName,))
         result = self.cur.fetchone()
-        return result[0]
+        return result
 
     def select_all(self, QUERY):
         """A function for debugging, REMOVE if finished"""
