@@ -5,11 +5,13 @@ DATABASE = "Steamdata.db"
 Games = Database()
 Games.set_Database(DATABASE)
 
+
 def seperator_irator(text=str):
     """Seperate ';' from strings, returns a list"""
     result = text.split(sep=";")
     return result
-    
+
+
 temp_developers = []
 temp_owners = []
 temp_publishers = []
@@ -25,7 +27,7 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
         game_tempGenres = []
         game_tempPublishers = []
         game_tempCategories = []
-        
+
         # Handles Developers Table
         if row[4] != "developer":
             for i in range(0, len(seperator_irator(row[4]))):
@@ -34,8 +36,8 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
                     developer = seperator_irator(row[4])[i]
                     temp_developers.append(developer)
                     Games.insert_Developers(developer)
-        # END OF DEVELOPERS 
-        
+        # END OF DEVELOPERS
+
         # Handles Publishers Table
         if row[5] != "publisher":
             for i in range(0, len(seperator_irator(row[5]))):
@@ -45,7 +47,7 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
                     temp_publishers.append(publisher)
                     Games.insert_Pubishers(publisher)
         # END OF PUBLISHERS TABLE
-        
+
         # Handles Categories Table
         if row[8] != "categories":
             for i in seperator_irator(row[8]):
@@ -55,7 +57,7 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
                     temp_categories.append(i)
 
         # END OF Categories Table
-        
+
         # Handles Genres Table
         if row[9] != "genres":
             for i in seperator_irator(row[9]):
@@ -75,7 +77,7 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
                     temp_tags.append(i)
 
         # END OF Tags Table
-        
+
         # Handles Owners Table
         if row[16] != "owners":
             if row[16] not in temp_owners:
@@ -89,8 +91,8 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
              row[0], row[1], row[2], row[3], row[7],
              row[11], row[12], row[13], row[6],
              row[14], row[15], row[17],
-            ) # Goodluck figuring this out!
-            Games.insert_Games(game_things) # ILOVEOBJECTS
+            )  # Goodluck figuring this out!
+            Games.insert_Games(game_things)  # ILOVEOBJECTS
             Games.update_GamesOwnerAmount(row[1], row[16])
             # It hurts to look at.
             # There was no way to put this in one 'for' function
@@ -110,6 +112,3 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
         # END OF GAMES TABLE
 Games.commit()
 Games.exit()
-
-            
-            
