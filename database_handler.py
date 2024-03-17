@@ -74,7 +74,6 @@ class Database(object):
     
     def update_GamesOwnerAmount(self, gameName, ownerAmount):
         gameID = self.selectGames_gameNameFor_gameID(gameName)
-        print(gameID)
         self.cur.execute("""
                          UPDATE Games
                          SET ownerAmount = (?)
@@ -143,7 +142,6 @@ class Database(object):
         self.cur.execute("""SELECT categoryID FROM Categories WHERE categoryName = (?)"""
                          , (categoryName,))
         result = self.cur.fetchone()
-        print( f"{result} RESULT")
         return result[0]
     
     def selectPublishers_publisherNameFor_publisherID(self, publisherName):
@@ -163,9 +161,3 @@ class Database(object):
         self.cur.execute(QUERY)
         result = self.cur.fetchall()
         return result[0]
-    
-# Games = Database()
-# Games.set_Database("SteamData_Dummy2.db")
-
-
-# print(Games.selectCategories_categoryNameFor_categoryID("Multi-player"))

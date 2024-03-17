@@ -1,7 +1,7 @@
 import csv
 from database_handler import Database
 
-DATABASE = "Steamdata_Dummy2.db"
+DATABASE = "Steamdata.db"
 Games = Database()
 Games.set_Database(DATABASE)
 
@@ -92,8 +92,11 @@ with open("steam.csv", mode="r", encoding="utf-8") as file:
             ) # Goodluck figuring this out!
             Games.insert_Games(game_things) # ILOVEOBJECTS
             Games.update_GamesOwnerAmount(row[1], row[16])
-            print(row[1] + " Game Name!!! ")
-            # It hurts to look at
+            # It hurts to look at.
+            # There was no way to put this in one 'for' function
+            # as it would either index out of range (and potentially
+            # put nothing) or would not be enough. It doesn't slow down
+            # the program as much anyways.
             for x in game_tempCategories:
                 Games.insert_gameCategories(row[1], x)
             for x in game_tempDevelopers:
