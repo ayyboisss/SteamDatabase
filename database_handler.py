@@ -161,3 +161,4 @@ class Database(object):
         self.cur.execute(QUERY)
         result = self.cur.fetchall()
         return result[0]
+    
