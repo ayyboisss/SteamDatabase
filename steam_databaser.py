@@ -10,30 +10,60 @@ tables = Database()
 tables.set_Database(DATABASE)
 
 def user_input():
-    pass
+    try:
+        inp = int(input())
+    except ValueError:
+        inp = None
+    else:
+        return inp
 
 def menu():
+    clear()
     print("--"*10)
     print("SteamData Menu:")
-    print("1. Search \n2. Insert \n3. Delete \n4. Update" )
+    print("1. Search \n2. Insert \n3. Delete \n4. Update")
+    while True:
+        menu_inp = user_input()
+        if menu_inp == 1:
+            search_menu()
+        else:
+            print("Invalid input")
+        
+
 
 def search_menu():
+    clear()
     print("--"*10)
     print("Table to search:")
     print("1. Games \n2. Developers \n3. Publishers")
+    while True:
+        search_inp = user_input()
+        if search_inp == 1:
+            search_games()
+        elif search_inp == 2:
+            search_developers()
+        elif search_inp == 3:
+            search_publishers()
+        else:
+            print("Invalid input")
+    
+def search_games():
+    clear()
+    print("--"*10)
+    print("Select by:")
+    print("1. Name \n2. Game ID \n3. Developer")
+    pass
 
-while True:
-    menu()
-    try:
-        user_input = int(input())
-    except ValueError:
-        print("That isn't a number innit?")
-        sleep(1)
-    else:
-        if user_input == 1:
-            # Search Menu, This will branch out alot.
-            clear()
-            search_menu()
+def search_developers():
+    pass
 
+def search_publishers():
+    pass
+    
+
+
+# This is a dumb idea, do NOT do this
+menu()
+    
     
 

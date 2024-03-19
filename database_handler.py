@@ -155,6 +155,19 @@ class Database(object):
                          , (genreName,))
         result = self.cur.fetchone()
         return result[0]
+    
+    def selectGames_searchName(self, gameName):
+        self.cur.execute("""
+                         SELECT Games.gameName, Developers.developerName
+                         FROM gameDevelopers
+                         JOIN Games
+                         ON Games.gameID = gameDevelopers.gameID
+                         JOIN Developers ON
+                         Developers.developerID = gameDevelopers.developerID
+                         WHERE gameName LIKE (?)
+                         """, (f"%{gameName}%", ))
+        result = self.cur.fetchall()
+        return result
 
     def select_all(self, QUERY):
         """A function for debugging, REMOVE if finished"""
