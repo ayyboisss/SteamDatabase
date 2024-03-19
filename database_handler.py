@@ -36,6 +36,7 @@ class Database(object):
         except sqlite3.Error:
             print("Something went wrong!")
     
+    # INSERT QUERIES ------------------------------------------------------------
     def insert_Developers(self, developerName=str):
         self.cur.execute("""
                           INSERT INTO Developers (developerName)
@@ -120,6 +121,7 @@ class Database(object):
                          VALUES (?, ?)
                          """, (gameID, genreID,))
 
+    # SELECT QUERIES ------------------------------------------------------------
     def selectGames_gameNameFor_gameID(self, gameName):
         self.cur.execute("""SELECT gameID FROM Games WHERE gameName = (?)"""
                          , (gameName,))
