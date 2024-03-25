@@ -25,22 +25,23 @@ def show_result(result=tuple, columns=tuple):
     limit_flag = False
     x = 0
     while True:
-        print(" ".join(columns))
+        clear()
         if len(result) > 5:
-            for i in range((0 + x), (4 + x)):
+            for i in range((0 + x), ((4 + x)+ 1)):
                 try:
-                    print("".join(result[i]))
+                    print(" ".join(result[i]))
                 except IndexError:
                     limit_flag = True
                     print(" ")
-            next_page = input("Enter N / B to go to the next / last page, otherwise \
-                                  enter nothing to go back to the main menu \n")
+            next_page = input("Enter N / B to go to the next / last page, " +
+                              "otherwise enter nothing to go back to the main menu \n")
             if next_page.capitalize() == "N":
                 if limit_flag:
                     pass
                 else:
                     x += 5
             elif next_page.capitalize() == "B":
+                limit_flag = False
                 if x == 0:
                     pass # While loop will take care of these whippersnappers
                 else:
@@ -50,8 +51,16 @@ def show_result(result=tuple, columns=tuple):
                 
                 
         elif len(result) > 0:
-            for i in len(result):
-                print("".join(i))
+            for i in result:
+                print(" ".join(i))
+            
+            end_search = input("Press Enter to go back to the menu, " +
+                               "or press S to search again")
+            if end_search.capitalize() == "S":
+                search_menu()
+            else:
+                menu()
+                
 
     
 
