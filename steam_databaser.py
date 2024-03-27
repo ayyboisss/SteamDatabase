@@ -9,6 +9,9 @@ DATABASE = "SteamData.db"
 tables = Database()
 tables.set_Database(DATABASE)
 
+class StopThis(Exception):  # Important for stopping the goofy app
+    pass
+
 
 def clear():
     "Use this instead of typing 'os.' to clear the console"
@@ -16,17 +19,13 @@ def clear():
 
 
 def user_input():
-    "Returns None if the input is not a number."
+    "Returns user input via keyboard input (w/o pressing the Enter key)."
     inp = getch().decode("ASCII")
-    if inp == """\x1b""":
-        return True
+    # Any more checks than this would be redundant
     try:
-        inp = int(inp)
+        return int(inp)
     except ValueError:
-        inp = None
-    else:
-        return inp
-
+        return inp.upper()
 
 def show_result(result=tuple, columns=tuple):
     "This will give a paged (if possible) screen to deal with the SQL queries"
@@ -49,27 +48,27 @@ def show_result(result=tuple, columns=tuple):
             print("Enter N / B to go to the next / last page, " +
                   "otherwise enter nothing to go back to the main menu \n")
             next_page = getch().decode("ASCII")
-            print(next_page)
-
-            if next_page.capitalize() == "N":
-                if limit_flag:
-                    pass
-                else:
-                    current_page += 1
-                    x += page_turn
-            elif next_page.capitalize() == "B":
-                limit_flag = False
-                if x == 0:
-                    pass  # While loop will take care of these whippersnappers
-                else:
-                    current_page -= 1
-                    x -= page_turn
-            else:
-                menu()
+            match next_page.capitalize():
+                case "N":
+                    if limit_flag:
+                        pass
+                    else:
+                        current_page += 1
+                        x += page_turn
+                case "B":
+                    limit_flag = False
+                    if x == 0:
+                        pass  # While loop will take care of these whippersnappers
+                    else:
+                        current_page -= 1
+                        x -= page_turn
+                case _:
+                    menu()
 
         elif len(result) > 0:
             for i in result:
-                print(" ".join(i))
+                print(f"{columns[0]}: {i[0]}")
+                print(f"{columns[1]}: {i[1]} \n")
 
             end_search = input("Press Enter to go back to the menu, " +
                                "or press S to search again")
@@ -87,30 +86,35 @@ def menu_title(title):
 
 def menu():
     menu_title("Steam Data Menu:")
-    print("1. Search \n2. Insert \n3. Delete \n4. Update")
+    print("1. Search \n2. Insert \n3. Delete \n4. Update \nQ. Exit")
     while True:
         menu_inp = user_input()
-        if menu_inp == 1:
-            search_menu()
-        elif menu_inp:
-            break
-        else:
-            print("Invalid input")
+        match menu_inp:
+            case "Q":
+                clear()
+                print("Goodbye!")
+                sleep(1)
+                raise StopThis
+            case 1:
+                search_menu()
+            case _:
+                print("Invalid Input.")
 
-
+# SEARCH MENU ------------------------------------
 def search_menu():
     menu_title("Table to search:")
     print("1. Games \n2. Developers \n3. Publishers")
     while True:
         search_inp = user_input()
-        if search_inp == 1:
-            search_games()
-        elif search_inp == 2:
-            search_developers()
-        elif search_inp == 3:
-            search_publishers()
-        else:
-            print("Invalid input")
+        match search_inp:
+            case 1:
+                search_games()
+            case 2:
+                search_developers()
+            case 3:
+                search_publishers()
+            case _:
+                print("Invalid input")
 
 
 def search_games():
@@ -130,12 +134,26 @@ def select_games_name():
 
 
 def search_developers():
+    menu_title("Searching...")
+    search_name = input("Name of the Developer: ")
+    result = tables.selectDevelopers_searchName()  # NOTE: ADD THIS
     pass
 
 
 def search_publishers():
     pass
 
+# INSERT MENU ------------------------------------
+def insert_menu():
+    menu_title("Table to insert:")
+    print("1. Games \n2. Tags")
+
 
 # This is a dumb idea, do NOT do this
-menu()
+def main_menu():
+    try:
+        return menu()
+    except:
+        return
+
+main_menu()

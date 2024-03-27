@@ -159,6 +159,7 @@ class Database(object):
         return result[0]
     
     def selectGames_searchName(self, gameName):
+        "Returns a list with tuples - [(a,b)]. a is the game name, b is the developer name"
         self.cur.execute("""
                          SELECT DISTINCT Games.gameName, Developers.developerName
                          FROM gameDevelopers
@@ -170,6 +171,8 @@ class Database(object):
                          """, (f"%{gameName}%", ))
         result = self.cur.fetchall()
         return result
+    
+    def selectDeveloper_searchName()
 
     def select_all(self, QUERY):
         """A function for debugging, REMOVE if finished"""
