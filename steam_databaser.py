@@ -50,7 +50,7 @@ def show_result(result=tuple, columns=tuple):
                   "otherwise enter nothing to go back to the main menu \n")
             next_page = getch().decode("ASCII")
             print(next_page)
-            
+
             if next_page.capitalize() == "N":
                 if limit_flag:
                     pass
@@ -60,18 +60,17 @@ def show_result(result=tuple, columns=tuple):
             elif next_page.capitalize() == "B":
                 limit_flag = False
                 if x == 0:
-                    pass # While loop will take care of these whippersnappers
+                    pass  # While loop will take care of these whippersnappers
                 else:
                     current_page -= 1
                     x -= page_turn
             else:
                 menu()
-                
-                
+
         elif len(result) > 0:
             for i in result:
                 print(" ".join(i))
-            
+
             end_search = input("Press Enter to go back to the menu, " +
                                "or press S to search again")
             if end_search.capitalize() == "S":
