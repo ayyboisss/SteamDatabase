@@ -160,7 +160,7 @@ class Database(object):
     
     def selectGames_searchName(self, gameName):
         self.cur.execute("""
-                         SELECT Games.gameName, Developers.developerName
+                         SELECT DISTINCT Games.gameName, Developers.developerName
                          FROM gameDevelopers
                          JOIN Games
                          ON Games.gameID = gameDevelopers.gameID

@@ -1,5 +1,7 @@
 import os
 from database_handler import Database
+from math import ceil
+from msvcrt import getch
 from time import sleep
 
 
@@ -9,43 +11,59 @@ tables.set_Database(DATABASE)
 
 
 def clear():
+    "Use this instead of typing 'os.' to clear the console"
     os.system("cls")
 
 
 def user_input():
+    "Returns None if the input is not a number."
+    inp = getch().decode("ASCII")
+    if inp == """\x1b""":
+        return True
     try:
-        inp = int(input())
+        inp = int(inp)
     except ValueError:
         inp = None
     else:
         return inp
-    
+
 
 def show_result(result=tuple, columns=tuple):
+    "This will give a paged (if possible) screen to deal with the SQL queries"
+    page_turn = 4
     limit_flag = False
     x = 0
+    current_page = 1
+    page_limit = ceil(len(result) / page_turn)
     while True:
-        clear()
-        if len(result) > 5:
-            for i in range((0 + x), ((4 + x)+ 1)):
+        if len(result) > page_turn:
+            clear()
+            print(f"Result: {columns[0]} with {columns[1]} ({current_page} / {page_limit}) \n")
+            for i in range((0 + x), (page_turn + x)):
                 try:
-                    print(" ".join(result[i]))
+                    print(f"{columns[0]}: {result[i][0]}")
+                    print(f"{columns[1]}: {result[i][1]} \n")
                 except IndexError:
                     limit_flag = True
                     print(" ")
-            next_page = input("Enter N / B to go to the next / last page, " +
-                              "otherwise enter nothing to go back to the main menu \n")
+            print("Enter N / B to go to the next / last page, " +
+                  "otherwise enter nothing to go back to the main menu \n")
+            next_page = getch().decode("ASCII")
+            print(next_page)
+            
             if next_page.capitalize() == "N":
                 if limit_flag:
                     pass
                 else:
-                    x += 5
+                    current_page += 1
+                    x += page_turn
             elif next_page.capitalize() == "B":
                 limit_flag = False
                 if x == 0:
                     pass # While loop will take care of these whippersnappers
                 else:
-                    x -= 5
+                    current_page -= 1
+                    x -= page_turn
             else:
                 menu()
                 
@@ -60,15 +78,13 @@ def show_result(result=tuple, columns=tuple):
                 search_menu()
             else:
                 menu()
-                
-
-    
 
 
 def menu_title(title):
     clear()
     print("--"*10)
     print(f"{title}")
+
 
 def menu():
     menu_title("Steam Data Menu:")
@@ -77,6 +93,8 @@ def menu():
         menu_inp = user_input()
         if menu_inp == 1:
             search_menu()
+        elif menu_inp:
+            break
         else:
             print("Invalid input")
 
@@ -103,7 +121,8 @@ def search_games():
         game_inp = user_input()
         if game_inp == 1:
             select_games_name()
-            
+
+
 def select_games_name():
     menu_title("Searching...")
     search_name = input("Name of the game: ")
